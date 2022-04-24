@@ -22,7 +22,13 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         
         results = holistic.process(image)
-        print(type(results.face_landmarks))
+        
+        if results.pose_landmarks:
+            print(
+                f'Nose coordinates: ('
+                f'{results.pose_landmarks.landmark[mp_holistic.PoseLandmark.NOSE].x * w}, '
+                f'{results.pose_landmarks.landmark[mp_holistic.PoseLandmark.NOSE].y * h})'
+            )
         # face_landmarks, pose_landmarks, 
         # left_hand_landmarks, right_hand_landmarks
 
@@ -34,17 +40,20 @@ with mp_holistic.Holistic(min_detection_confidence=0.5, min_tracking_confidence=
                                 mp_drawing.DrawingSpec(color=(7,95,143), thickness=2, circle_radius=2)
                                 )
         # 2. Right hand
-        mp_drawing.draw_landmarks(image, results.right_hand_landmarks, mp_holistic.HAND_CONNECTIONS, 
+        mp_drawing.draw_landmarks(image, results.right_hand_landmarks, 
+                                mp_holistic.HAND_CONNECTIONS, 
                                 mp_drawing.DrawingSpec(color=(70,177,137), thickness=2, circle_radius=4),
                                 mp_drawing.DrawingSpec(color=(38,110,84), thickness=2, circle_radius=2)
                                 )
         # 3. Left Hand
-        mp_drawing.draw_landmarks(image, results.left_hand_landmarks, mp_holistic.HAND_CONNECTIONS, 
+        mp_drawing.draw_landmarks(image, results.left_hand_landmarks, 
+                                mp_holistic.HAND_CONNECTIONS, 
                                 mp_drawing.DrawingSpec(color=(70,177,137), thickness=2, circle_radius=4),
                                 mp_drawing.DrawingSpec(color=(38,110,84), thickness=2, circle_radius=2)
                                 )
         # 4. Pose Detections
-        mp_drawing.draw_landmarks(image, results.pose_landmarks, mp_holistic.POSE_CONNECTIONS, 
+        mp_drawing.draw_landmarks(image, results.pose_landmarks, 
+                                mp_holistic.POSE_CONNECTIONS, 
                                 mp_drawing.DrawingSpec(color=(166,83,147), thickness=2, circle_radius=4),
                                 mp_drawing.DrawingSpec(color=(92,28,78), thickness=2, circle_radius=2)
                                 )
