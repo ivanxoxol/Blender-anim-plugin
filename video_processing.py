@@ -4,7 +4,6 @@ import mediapipe as mp
 import pathlib
 from pathlib import Path
 import csv
-import os
 
 mp_drawing = mp.solutions.drawing_utils
 mp_holistic = mp.solutions.holistic
@@ -52,10 +51,10 @@ with mp_holistic.Holistic(
         # Pose Detections
         mp_drawing.draw_landmarks(image, results.pose_landmarks, 
                                 mp_holistic.POSE_CONNECTIONS, 
-                                mp_drawing.DrawingSpec(color=(166,83,147), 
+                                mp_drawing.DrawingSpec( color=(166,83,147), 
                                                         thickness=2, 
                                                         circle_radius=4),
-                                mp_drawing.DrawingSpec(color=(92,28,78), 
+                                mp_drawing.DrawingSpec( color=(92,28,78), 
                                                         thickness=2, 
                                                         circle_radius=2))
         
