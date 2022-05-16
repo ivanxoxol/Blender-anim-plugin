@@ -64,9 +64,9 @@ with mp_holistic.Holistic(
         try:
             pose = results.pose_landmarks.landmark
             pose_row = [fps]
-            pose_row += list(np.array([[ int(landmark.x * w), 
-                                        int(landmark.y * h), 
-                                        int(landmark.z * c)  ] 
+            pose_row += list(np.array([[int(w/10-(landmark.x * w)/10),
+                                        int(h/10-(landmark.y * h)/10),
+                                        int(c/10-(landmark.z * c)/10)]
                                     for landmark in pose]).flatten())
             
             with open('coords.csv', mode='a', newline='') as f:
