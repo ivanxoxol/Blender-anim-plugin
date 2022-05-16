@@ -12,14 +12,15 @@ mp_holistic = mp.solutions.holistic
 video_path = Path(pathlib.Path.cwd(), "video", "acrobatics.mp4")
 cap = cv2.VideoCapture(str(video_path))
 
+fps = cap.get(cv2.CAP_PROP_FPS)
+
 # Make csv file profile
 num_coords = 33
-landmarks = []
+landmarks = ["fps"]
 for val in range(1, num_coords+1):
     landmarks += [  'x{}'.format(val), 
                     'y{}'.format(val), 
-                    'z{}'.format(val), 
-                    'v{}'.format(val)   ]
+                    'z{}'.format(val),   ]
 with open('coords.csv', mode='w', newline='') as f:
     csv_writer = csv.writer(f, delimiter=',', 
                             quotechar='"', 
@@ -30,7 +31,7 @@ with open('coords.csv', mode='w', newline='') as f:
 with mp_holistic.Holistic(
                     min_detection_confidence=0.5,
                     min_tracking_confidence=0.5     ) as holistic:
-    
+
     while cap.isOpened():
 
         # Check the video stream
@@ -38,7 +39,7 @@ with mp_holistic.Holistic(
         if not ret:
             print("Ignoring empty camera frame.")
             break
-        
+
         # Get results
         image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
         image.flags.writeable = False
@@ -59,12 +60,13 @@ with mp_holistic.Holistic(
                                                         circle_radius=2))
         
         # Export coordinates
+        h, w, c = frame.shape
         try:
             pose = results.pose_landmarks.landmark
-            pose_row = list(np.array([[landmark.x, 
-                                        landmark.y, 
-                                        landmark.z, 
-                                        landmark.visibility] 
+            pose_row = [fps]
+            pose_row += list(np.array([[ int(landmark.x * w), 
+                                        int(landmark.y * h), 
+                                        int(landmark.z * c)  ] 
                                     for landmark in pose]).flatten())
             
             with open('coords.csv', mode='a', newline='') as f:
