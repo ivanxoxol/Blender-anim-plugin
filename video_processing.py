@@ -12,7 +12,7 @@ mp_holistic = mp.solutions.holistic
 video_path = Path(pathlib.Path.cwd(), "video", "acrobatics.mp4")
 cap = cv2.VideoCapture(str(video_path))
 
-fps = cap.get(cv2.CAP_PROP_FPS)
+fps = int(cap.get(cv2.CAP_PROP_FPS))
 
 # Make csv file profile
 num_coords = 33
