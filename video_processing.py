@@ -1,3 +1,8 @@
+"""
+This module opens the video and uses mediapipe to create a csv file with landmarks coordinates
+to be used in blender.
+"""
+
 import cv2
 import numpy as np
 import mediapipe as mp
@@ -18,9 +23,9 @@ fps = int(cap.get(cv2.CAP_PROP_FPS))
 num_coords = 33
 landmarks = ["fps"]
 for val in range(1, num_coords+1):
-    landmarks += [  'x{}'.format(val), 
-                    'y{}'.format(val), 
-                    'z{}'.format(val),   ]
+    landmarks += ['x{}'.format(val),
+                  'y{}'.format(val),
+                  'z{}'.format(val)]
 with open('coords.csv', mode='w', newline='') as f:
     csv_writer = csv.writer(f, delimiter=',', 
                             quotechar='"', 
@@ -28,9 +33,8 @@ with open('coords.csv', mode='w', newline='') as f:
     csv_writer.writerow(landmarks)
 
 # Make detections using mediapipe holistic mode
-with mp_holistic.Holistic(
-                    min_detection_confidence=0.5,
-                    min_tracking_confidence=0.5     ) as holistic:
+with mp_holistic.Holistic(min_detection_confidence=0.5,
+                          min_tracking_confidence=0.5) as holistic:
 
     while cap.isOpened():
 
@@ -51,13 +55,13 @@ with mp_holistic.Holistic(
         
         # Pose Detections
         mp_drawing.draw_landmarks(image, results.pose_landmarks, 
-                                mp_holistic.POSE_CONNECTIONS, 
-                                mp_drawing.DrawingSpec( color=(166,83,147), 
-                                                        thickness=2, 
-                                                        circle_radius=4),
-                                mp_drawing.DrawingSpec( color=(92,28,78), 
-                                                        thickness=2, 
-                                                        circle_radius=2))
+                                  mp_holistic.POSE_CONNECTIONS,
+                                  mp_drawing.DrawingSpec(color=(166, 83, 147),
+                                                         thickness=2,
+                                                         circle_radius=4),
+                                  mp_drawing.DrawingSpec(color=(92, 28, 78),
+                                                         thickness=2,
+                                                         circle_radius=2))
         
         # Export coordinates
         h, w, c = frame.shape
