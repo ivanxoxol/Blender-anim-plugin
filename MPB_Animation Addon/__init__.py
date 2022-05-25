@@ -14,16 +14,41 @@
 bl_info = {
     "name" : "MPB Animation",
     "author" : "Ivan & Kirill",
-    "description" : "This addon will help you quickly generate a character animation from your motion video",
-    "blender" : (2, 93, 5),
+    "description" : "Animation from your motion video",
+    "blender" : (3, 2, 0),
     "version" : (0, 0, 1),
     "location" : "View3D",
     "warning" : "",
     "category" : "Object"
 }
 
+
+import bpy
+from bpy.utils import register_class, unregister_class
+
+from . animation_pnl_op import SetAnimationCoordinates
+from . choose_model_pnl_op import ChooseModelFile
+from . choose_video_pnl_op import AnimProps
+from . choose_video_pnl_op import ChooseVideoFile
+from . menu_pnl import ANIM_PT_ObjectTrackingPanel
+from . anim_move_op import Move_obj
+
+classes = [
+    Move_obj,
+    AnimProps, 
+    SetAnimationCoordinates,
+    ChooseModelFile,
+    ChooseVideoFile,
+    ANIM_PT_ObjectTrackingPanel,
+]
+
 def register():
-    ...
+    for cl in classes:
+        register_class(cl)
 
 def unregister():
-    ...
+    for cl in reversed(classes):
+        unregister_class(cl)
+        
+if __name__ == "__main__":
+    register()
