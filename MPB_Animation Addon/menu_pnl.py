@@ -1,7 +1,6 @@
 import bpy
 
 from bpy.types import Panel
-from bpy.utils import register_class
 
 class ANIM_PT_ObjectTrackingPanel(Panel):
     bl_label = "Object Tracking Animation"
@@ -11,13 +10,10 @@ class ANIM_PT_ObjectTrackingPanel(Panel):
     
     def draw(self, context):
         layout = self.layout
-        props = context.object.anim
         col = layout.column()
-        col.operator("file.choose_video_file")
+        col.operator("file.choose_video_file", text="add video")
         col = layout.column()
-        col.operator("file.choose_model_file")
+        col.operator("file.choose_model_file", text="add model")
         col = layout.column()
-        col.operator("anim.set_anim_coords")
+        col.operator("anim.set_anim_coords", text="run tracking")
 
-if __name__ == "__main__":
-    register_class(ANIM_PT_ObjectTrackingPanel)

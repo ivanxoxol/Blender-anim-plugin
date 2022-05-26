@@ -4,9 +4,8 @@ import os
 from bpy.props import BoolProperty, StringProperty
 from bpy_extras.io_utils import ImportHelper
 from bpy.types import Operator
-from bpy.utils import register_class
 
-class ChooseModelFile(Operator, ImportHelper):
+class ANIM_OT_ChooseModelFile(Operator, ImportHelper):
     """
     По второй кнопке из меню:
         - Открывает проводник
@@ -32,13 +31,13 @@ class ChooseModelFile(Operator, ImportHelper):
         """Do something with the selected file(s)."""
 
         filename, extension = os.path.splitext(self.filepath)
-        
+        global model_path
+        model_path = self.filepath
+
         print('Selected file:', self.filepath)
         print('File name:', filename)
         print('File extension:', extension)
         print('Some Boolean:', self.some_boolean)
+        print('model_path type:', type(model_path))
         
         return {"FINISHED"}
-
-if __name__ == "__main__":
-    register_class(ChooseModelFile)

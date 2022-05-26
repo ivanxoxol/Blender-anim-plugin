@@ -1,15 +1,10 @@
 import bpy
 
-from bpy.props import BoolProperty, PointerProperty
-from bpy.types import Operator, PropertyGroup
-from bpy.utils import register_class
+from bpy.types import Operator
+from . choose_model_pnl_op import model_path
+from . choose_video_pnl_op import video_path
 
-class AnimProps(PropertyGroup):
-    choose_video : BoolProperty(
-        name = ""
-    )
-
-class SetAnimationCoordinates(Operator):
+class ANIM_OT_SetAnimationCoordinates(Operator):
     """
     По третьей кнопке из меню:
         - Запускает скрипт трекинга, который выдает в результате csv файл с координатами
@@ -24,9 +19,3 @@ class SetAnimationCoordinates(Operator):
         """Do something with the selected file(s)."""
         print("-----------SetAnimationCoordinates DONE-------------")
         return {"FINISHED"}
-
-
-if __name__ == "__main__":
-    register_class(AnimProps)
-    register_class(SetAnimationCoordinates)    
-    bpy.types.Object.anim = PointerProperty(type = AnimProps)

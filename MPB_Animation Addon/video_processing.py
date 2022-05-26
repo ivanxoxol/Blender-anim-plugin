@@ -25,9 +25,9 @@ fps = int(cap.get(cv2.CAP_PROP_FPS))
 num_coords = 33
 landmarks = ["fps"]
 for val in range(1, num_coords + 1):
-    landmarks += ['x{}'.format(val),
-                  'y{}'.format(val),
-                  'z{}'.format(val)]
+    landmarks += [  'x{}'.format(val),
+                    'y{}'.format(val),
+                    'z{}'.format(val)   ]
 with open('coords.csv', mode='w', newline='') as f:
     csv_writer = csv.writer(f, delimiter=',',
                             quotechar='"',
@@ -35,8 +35,8 @@ with open('coords.csv', mode='w', newline='') as f:
     csv_writer.writerow(landmarks)
 
 # Make detections using mediapipe holistic mode
-with mp_holistic.Holistic(min_detection_confidence=0.5,
-                          min_tracking_confidence=0.5) as holistic:
+with mp_holistic.Holistic(  min_detection_confidence=0.5,
+                            min_tracking_confidence=0.5   ) as holistic:
     i = 0
     while cap.isOpened():
 
@@ -57,13 +57,13 @@ with mp_holistic.Holistic(min_detection_confidence=0.5,
 
         # Pose Detections
         mp_drawing.draw_landmarks(image, results.pose_landmarks,
-                                  mp_holistic.POSE_CONNECTIONS,
-                                  mp_drawing.DrawingSpec(color=(166, 83, 147),
-                                                         thickness=2,
-                                                         circle_radius=4),
-                                  mp_drawing.DrawingSpec(color=(92, 28, 78),
-                                                         thickness=2,
-                                                         circle_radius=2))
+                                    mp_holistic.POSE_CONNECTIONS,
+                                    mp_drawing.DrawingSpec( color=(166, 83, 147),
+                                                            thickness=2,
+                                                            circle_radius=4 ),
+                                    mp_drawing.DrawingSpec( color=(92, 28, 78),
+                                                            thickness=2,
+                                                            circle_radius=2 ))
 
         # Export coordinates
         h, w, c = frame.shape
@@ -78,7 +78,7 @@ with mp_holistic.Holistic(min_detection_confidence=0.5,
         pose_row += list(np.array([[int(w / 10 - (landmark.x * w) / 10),
                                     int(h / 10 - (landmark.y * h) / 10),
                                     int(c / 10 - (landmark.z * c) / 10)]
-                                   for landmark in pose]).flatten())
+                                                    for landmark in pose]).flatten())
         if i == 1:
             pose_row_before = pose_row.copy()
         else:

@@ -4,7 +4,7 @@ from bpy.types import Operator
 from bpy.utils import register_class
 
 
-class Move_obj(Operator):
+class ANIM_OT_Move_obj(Operator):
     """
     The Move_obj class performs the function of an object movement operator.
     Inherited from the Operator class in Blender.
@@ -56,10 +56,10 @@ class Move_obj(Operator):
 
 
 if __name__ == '__main__':    
-    register_class(Move_obj)
+    register_class(ANIM_OT_Move_obj)
 
     for j in range(33):
         obj_name = 'Cube.' + '0' * (3 - len(str(j))) + str(j)
         bpy.data.objects[obj_name].animation_data_clear()
         
-    bpy.app.handlers.frame_change_pre.append(Move_obj.execute)
+    bpy.app.handlers.frame_change_pre.append(ANIM_OT_Move_obj.execute)
