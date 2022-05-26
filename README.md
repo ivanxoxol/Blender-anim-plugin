@@ -1,7 +1,14 @@
-<h1 align="center"> Blender Animation plugin</h1>
-<p align="center">
-<img src="https://github.com/ivanxoxol/Blender-anim-plugin/blob/main/for%20readme/presentation.gif" width="100%"></p>
-<p align="center">
-This plugin is intended for use in blender 3d modeling software. With the help of this plugin, you can create a character rig animation effortlessly and in no time. It is enough just to shoot a video of your movements on a plain background, and then transfer the file to the plugin. After some time, automatically generated animation keys will appear on the timeline of your character rig. That's all.
-</p>
+# Blender Animation plugin
 
+<p align="center">
+<img src="https://github.com/ivanxoxol/Blender-anim-plugin/blob/main/for%20readme/preview.png" width="100%"></p>
+***
+<p align="center">
+With this plugin, you can create a sketch of a character animation effortlessly and in the shortest possible time in blender! 
+
+Just select a video (yours or not) and after a while our algorithms will set the key frames for the points, based on which you can make a full rig.
+</p>
+## To use plugin:
+1. Run Blender (as adminstrator for Windows)
+2. Go to «Edit» -> «Preferences» -> «Add Ons» -> «Install addon», after select «enable»
+3. Run Blender Animation plugin!
