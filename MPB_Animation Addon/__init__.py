@@ -22,20 +22,17 @@ bl_info = {
     "category" : "Object"
 }
 
-
 import bpy
 from bpy.utils import register_class, unregister_class
 
 from . animation_pnl_op import SetAnimationCoordinates
 from . choose_model_pnl_op import ChooseModelFile
-from . choose_video_pnl_op import AnimProps
 from . choose_video_pnl_op import ChooseVideoFile
 from . menu_pnl import ANIM_PT_ObjectTrackingPanel
 from . anim_move_op import Move_obj
 
 classes = [
-    Move_obj,
-    AnimProps, 
+    Move_obj, 
     SetAnimationCoordinates,
     ChooseModelFile,
     ChooseVideoFile,
