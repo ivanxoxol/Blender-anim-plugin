@@ -1,4 +1,4 @@
-# Blender Animation plugin
+<h1 align="center">Blender Animation plugin</h1>
 <p align="center">
 <img src="https://github.com/ivanxoxol/Blender-anim-plugin/blob/main/for%20readme/preview.png" width="80%"></p>
 
