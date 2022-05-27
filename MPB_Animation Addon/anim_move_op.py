@@ -2,6 +2,7 @@ import bpy
 import csv
 from bpy.types import Operator
 from bpy.utils import register_class
+from pathlib import Path
 
 
 class ANIM_OT_Move_obj(Operator):
@@ -21,7 +22,9 @@ class ANIM_OT_Move_obj(Operator):
         Error handler: IndexError — if there are no more coordinates for the object, just continue
         """
 
-        with open('coords.csv', newline='', encoding='utf-8') as csvfile:
+        csv_path = Path.cwd().parents[0] / "Blender-anim-plugin" / "data" / "coords.csv"
+
+        with open(csv_path, newline='', encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile)
             all_point = []
             frame_of_end = 0
@@ -58,8 +61,4 @@ class ANIM_OT_Move_obj(Operator):
 if __name__ == '__main__':    
     register_class(ANIM_OT_Move_obj)
 
-    for j in range(33):
-        obj_name = 'Cube.' + '0' * (3 - len(str(j))) + str(j)
-        bpy.data.objects[obj_name].animation_data_clear()
-        
     bpy.app.handlers.frame_change_pre.append(ANIM_OT_Move_obj.execute)
