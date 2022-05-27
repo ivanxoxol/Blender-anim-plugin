@@ -29,15 +29,13 @@ from . choose_model_pnl_op import ANIM_OT_ChooseModelFile
 from . choose_video_pnl_op import ANIM_OT_ChooseVideoFile
 from . menu_pnl import ANIM_PT_ObjectTrackingPanel
 from . anim_move_op import ANIM_OT_Move_obj
-from . video_processing_op import ANIM_OT_VideoProcessing
 
 classes = (
     ANIM_OT_Move_obj, 
     ANIM_OT_SetAnimationCoordinates,
     ANIM_OT_ChooseModelFile,
     ANIM_OT_ChooseVideoFile,
-    ANIM_PT_ObjectTrackingPanel,
-    ANIM_OT_VideoProcessing
+    ANIM_PT_ObjectTrackingPanel
 )
 
 def register():
