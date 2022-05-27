@@ -1,7 +1,6 @@
 import bpy
 import csv
 from bpy.types import Operator
-from bpy.utils import register_class
 from pathlib import Path
 
 

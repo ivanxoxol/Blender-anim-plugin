@@ -12,7 +12,7 @@ import csv
 from pathlib import Path
 
 class ANIM_OT_VideoProcessing(Operator):
-    """ ??????????????? """
+    """ Make CSV file based on the (x, y, z) points of tracking from video file """
 
     bl_idname = "file.video_processing"
     bl_label = "Make CSV File"

@@ -24,7 +24,6 @@ bl_info = {
 
 import bpy
 from bpy.utils import register_class, unregister_class
-
 from . animation_pnl_op import ANIM_OT_SetAnimationCoordinates
 from . choose_model_pnl_op import ANIM_OT_ChooseModelFile
 from . choose_video_pnl_op import ANIM_OT_ChooseVideoFile

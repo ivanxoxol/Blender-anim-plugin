@@ -7,12 +7,13 @@ from random import randint
 
 class ANIM_OT_ChooseModelFile(Operator, ImportHelper):
     """
-    По второй кнопке из меню:
-        - Открывает проводник
-        - Пользователь выбирает файл
-        - Подтверждает выбор (если файл не выбран, оператор берет стоковую модель)
-        - После выбора отображает название файла на кнопке, импортирует модель
+    By the second button from the menu:
+        - Opens explorer
+        - User selects a file
+        - Confirms the selection (if no file is selected, the operator takes the stock model)
+        - After selection, displays the file name on the button, imports the model
     """
+
     bl_idname = "file.choose_model_file"
     bl_label = "Choose Model File"
     
@@ -28,7 +29,7 @@ class ANIM_OT_ChooseModelFile(Operator, ImportHelper):
     )
     
     def execute(self, context):
-        """Do something with the selected file(s)."""
+        """Add Model of the human just for fun and generate Cubes-Point Armature"""
 
         model_name, extension = os.path.splitext(self.filepath)
         model_path = self.filepath

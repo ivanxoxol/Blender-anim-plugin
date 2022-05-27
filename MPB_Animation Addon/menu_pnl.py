@@ -1,8 +1,9 @@
 import bpy
-
 from bpy.types import Panel
 
 class ANIM_PT_ObjectTrackingPanel(Panel):
+    """ Build a Menu """
+    
     bl_label = "Object Tracking Animation"
     bl_space_type = "VIEW_3D"
     bl_region_type = "UI"

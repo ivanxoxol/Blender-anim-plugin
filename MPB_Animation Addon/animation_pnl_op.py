@@ -1,21 +1,20 @@
 import bpy
-
 from bpy.types import Operator
-from random import randint
 
 class ANIM_OT_SetAnimationCoordinates(Operator):
     """
-    По третьей кнопке из меню:
-        - Запускает скрипт трекинга, который выдает в результате csv файл с координатами
-        - Двигает точки модели в соответствии с координатами в каждом кадре
-        - Показывает процесс выполнения процедуры
-        - После выполнения - сообщение об окончании
+    By the third button from the menu:
+        - Runs a tracking script that produces a csv file with coordinates as a result
+        - Moves the points of the model according to the coordinates in each frame
+        - Shows the progress of the procedure
+        - After completion - a message about the end
     """
+
     bl_idname = "anim.set_anim_coords"
     bl_label = "Set Animation Keys"
     
     def execute(self, context):
-        """Do something with the selected file(s)."""
+        """Add Cubes and run Set Animation Coordinates Operator"""
 
         for j in range(33):
             obj_name = 'Cube.' + '0' * (3 - len(str(j))) + str(j)
@@ -23,5 +22,4 @@ class ANIM_OT_SetAnimationCoordinates(Operator):
 
         bpy.ops.object.all_coord()
 
-        print("-----------SetAnimationCoordinates DONE-------------")
         return {"FINISHED"}

@@ -1,16 +1,16 @@
 import bpy
-
 from bpy.props import BoolProperty, StringProperty
 from bpy_extras.io_utils import ImportHelper
 from bpy.types import Operator 
 
+
 class ANIM_OT_ChooseVideoFile(Operator, ImportHelper):
     """
-    По первой кнопке из меню:
-        - Открывает проводник
-        - Пользователь выбирает файл
-        - Подтверждает выбор (если файл не выбран, оператор настаивает на выборе)
-        - После выбора отображает название файла на кнопке, сохраняет путь в переменную
+    On the first button from the menu:
+        - Opens explorer
+        - User selects a file
+        - Confirms selection (if file is not selected, operator insists on selection)
+        - After selection, displays the file name on the button, saves the path to a variable
     """
     bl_idname = "file.choose_video_file"
     bl_label = "Choose Video File"
@@ -27,7 +27,7 @@ class ANIM_OT_ChooseVideoFile(Operator, ImportHelper):
     )
     
     def execute(self, context):
-        """Do something with the selected file(s)."""
+        """Add Video path and Run Video Processing"""
 
         video_path = self.filepath
         bpy.ops.file.video_processing()
