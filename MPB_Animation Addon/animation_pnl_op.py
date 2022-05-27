@@ -1,8 +1,6 @@
 import bpy
 
 from bpy.types import Operator
-from . choose_model_pnl_op import model_path
-from . choose_video_pnl_op import video_path
 
 class ANIM_OT_SetAnimationCoordinates(Operator):
     """

@@ -1,6 +1,6 @@
 import bpy
 import os
-
+from video_processing import get_data
 from bpy.props import BoolProperty, StringProperty
 from bpy_extras.io_utils import ImportHelper
 from bpy.types import Operator
@@ -30,14 +30,7 @@ class ANIM_OT_ChooseVideoFile(Operator, ImportHelper):
     def execute(self, context):
         """Do something with the selected file(s)."""
         
-        filename, extension = os.path.splitext(self.filepath)
-        global video_path
         video_path = self.filepath
-
-        print('Selected file:', self.filepath)
-        print('File name:', filename)
-        print('File extension:', extension)
-        print('Some Boolean:', self.some_boolean)
-        print('video_path type:', type(video_path))
+        get_data(video_path)
         
         return {"FINISHED"}

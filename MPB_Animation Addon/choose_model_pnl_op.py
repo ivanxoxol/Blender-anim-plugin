@@ -1,6 +1,5 @@
 import bpy
 import os
-
 from bpy.props import BoolProperty, StringProperty
 from bpy_extras.io_utils import ImportHelper
 from bpy.types import Operator
@@ -30,14 +29,14 @@ class ANIM_OT_ChooseModelFile(Operator, ImportHelper):
     def execute(self, context):
         """Do something with the selected file(s)."""
 
-        filename, extension = os.path.splitext(self.filepath)
-        global model_path
+        model_name, extension = os.path.splitext(self.filepath)
         model_path = self.filepath
 
-        print('Selected file:', self.filepath)
-        print('File name:', filename)
-        print('File extension:', extension)
-        print('Some Boolean:', self.some_boolean)
-        print('model_path type:', type(model_path))
-        
+        if extension == '.obj' or extension == '.mtl':
+            bpy.ops.import_scene.obj(filepath=model_path, axis_forward='-Z', axis_up='Y', filter_glob="*.obj;*.mtl")
+        elif extension == '.fbx':
+            bpy.ops.import_scene.fbx(filepath=model_path, axis_forward='-Z', axis_up='Y', filter_glob="*.fbx")
+        elif extension == '.x3d' or extension == '.wrl':
+            bpy.ops.import_scene.x3d(filepath=model_path, axis_forward='-Z', axis_up='Y', filter_glob="*.x3d;*.wrl")
+
         return {"FINISHED"}

@@ -6,97 +6,105 @@ to be used in blender.
 import cv2
 import numpy as np
 import mediapipe as mp
+import csv
 import pathlib
 from pathlib import Path
-import csv
 
-smooth_fact = 0.9
+def get_data(path):
+    smooth_fact = 0.9
 
-mp_drawing = mp.solutions.drawing_utils
-mp_holistic = mp.solutions.holistic
+    mp_drawing = mp.solutions.drawing_utils
+    mp_holistic = mp.solutions.holistic
 
-# Get video path
-video_path = Path(pathlib.Path.cwd(), "video", "acrobatics.mp4")
-cap = cv2.VideoCapture(str(video_path))
+    # Get video path
+    video_path = path
+    cap = cv2.VideoCapture(str(video_path))
 
-fps = int(cap.get(cv2.CAP_PROP_FPS))
+    fps = int(cap.get(cv2.CAP_PROP_FPS))
 
-# Make csv file profile
-num_coords = 33
-landmarks = ["fps"]
-for val in range(1, num_coords + 1):
-    landmarks += [  'x{}'.format(val),
-                    'y{}'.format(val),
-                    'z{}'.format(val)   ]
-with open('coords.csv', mode='w', newline='') as f:
-    csv_writer = csv.writer(f, delimiter=',',
-                            quotechar='"',
-                            quoting=csv.QUOTE_MINIMAL)
-    csv_writer.writerow(landmarks)
+    # Make csv file profile
+    num_coords = 33
+    landmarks = ["fps"]
+    for val in range(1, num_coords + 1):
+        landmarks += [  'x{}'.format(val),
+                        'y{}'.format(val),
+                        'z{}'.format(val)   ]
 
-# Make detections using mediapipe holistic mode
-with mp_holistic.Holistic(  min_detection_confidence=0.5,
-                            min_tracking_confidence=0.5   ) as holistic:
-    i = 0
-    while cap.isOpened():
+    csv_path = Path.cwd().parents[0] / "Blender-anim-plugin" / "data" / "coords.csv"
 
-        # Check the video stream
-        ret, frame = cap.read()
-        if not ret:
-            print("Ignoring empty camera frame.")
-            break
+    with open(csv_path, mode='w', newline='') as f:
+        csv_writer = csv.writer(f, delimiter=',',
+                                quotechar='"',
+                                quoting=csv.QUOTE_MINIMAL)
+        csv_writer.writerow(landmarks)
 
-        # Get results
-        image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-        image.flags.writeable = False
+    # Make detections using mediapipe holistic mode
+    with mp_holistic.Holistic(  min_detection_confidence=0.5,
+                                min_tracking_confidence=0.5   ) as holistic:
+        i = 0
+        while cap.isOpened():
 
-        results = holistic.process(image)
+            # Check the video stream
+            ret, frame = cap.read()
+            if not ret:
+                print("Ignoring empty camera frame.")
+                break
 
-        image.flags.writeable = True
-        image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
+            # Get results
+            image = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            image.flags.writeable = False
 
-        # Pose Detections
-        mp_drawing.draw_landmarks(image, results.pose_landmarks,
-                                    mp_holistic.POSE_CONNECTIONS,
-                                    mp_drawing.DrawingSpec( color=(166, 83, 147),
-                                                            thickness=2,
-                                                            circle_radius=4 ),
-                                    mp_drawing.DrawingSpec( color=(92, 28, 78),
-                                                            thickness=2,
-                                                            circle_radius=2 ))
+            results = holistic.process(image)
 
-        # Export coordinates
-        h, w, c = frame.shape
+            image.flags.writeable = True
+            image = cv2.cvtColor(image, cv2.COLOR_RGB2BGR)
 
-        try:
-            pose = results.pose_landmarks.landmark
-        except AttributeError:
-            continue
+            # Pose Detections
+            mp_drawing.draw_landmarks(image, results.pose_landmarks,
+                                        mp_holistic.POSE_CONNECTIONS,
+                                        mp_drawing.DrawingSpec( color=(166, 83, 147),
+                                                                thickness=2,
+                                                                circle_radius=4 ),
+                                        mp_drawing.DrawingSpec( color=(92, 28, 78),
+                                                                thickness=2,
+                                                                circle_radius=2 ))
 
-        i += 1
-        pose_row = [fps]
-        pose_row += list(np.array([[int(w / 10 - (landmark.x * w) / 10),
-                                    int(h / 10 - (landmark.y * h) / 10),
-                                    int(c / 10 - (landmark.z * c) / 10)]
-                                                    for landmark in pose]).flatten())
-        if i == 1:
-            pose_row_before = pose_row.copy()
-        else:
-            for j in range(1, len(pose_row), 3):
-                pose_row[j] = int(smooth_fact * pose_row[j] + (1 - smooth_fact) * pose_row_before[j])
-            pose_row_before = pose_row.copy()
+            # Export coordinates
+            h, w, c = frame.shape
 
-        with open('coords.csv', mode='a', newline='') as f:
-            csv_writer = csv.writer(f, delimiter=',',
-                                    quotechar='"',
-                                    quoting=csv.QUOTE_MINIMAL)
-            csv_writer.writerow(pose_row)
+            try:
+                pose = results.pose_landmarks.landmark
+            except AttributeError:
+                continue
 
-        # Show video processing in window
-        cv2.imshow('video processing', image)
+            i += 1
+            pose_row = [fps]
+            pose_row += list(np.array([[int(w / 10 - (landmark.x * w) / 10),
+                                        int(h / 10 - (landmark.y * h) / 10),
+                                        int(c / 10 - (landmark.z * c) / 10)]
+                                                        for landmark in pose]).flatten())
+            if i == 1:
+                pose_row_before = pose_row.copy()
+            else:
+                for j in range(1, len(pose_row), 3):
+                    pose_row[j] = int(smooth_fact * pose_row[j] + (1 - smooth_fact) * pose_row_before[j])
+                pose_row_before = pose_row.copy()
 
-        if cv2.waitKey(5) & 0xFF == ord('q'):
-            break
+            with open(csv_path, mode='a', newline='') as f:
+                csv_writer = csv.writer(f, delimiter=',',
+                                        quotechar='"',
+                                        quoting=csv.QUOTE_MINIMAL)
+                csv_writer.writerow(pose_row)
 
-cap.release()
-cv2.destroyAllWindows()
+            # Show video processing in window
+            cv2.imshow('video processing', image)
+
+            if cv2.waitKey(5) & 0xFF == ord('q'):
+                break
+
+    cap.release()
+    cv2.destroyAllWindows()
+
+if __name__ == "__main__":
+    base_video_path = Path('D:/MY/VisualStudioCode Projects/BLENDER-TERM-PROJECT/Blender-anim-plugin/video/acrobatics.mp4')
+    get_data(base_video_path)
