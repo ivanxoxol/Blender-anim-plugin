@@ -3,6 +3,7 @@ import os
 from bpy.props import BoolProperty, StringProperty
 from bpy_extras.io_utils import ImportHelper
 from bpy.types import Operator
+from random import randint
 
 class ANIM_OT_ChooseModelFile(Operator, ImportHelper):
     """
@@ -38,5 +39,14 @@ class ANIM_OT_ChooseModelFile(Operator, ImportHelper):
             bpy.ops.import_scene.fbx(filepath=model_path, axis_forward='-Z', axis_up='Y', filter_glob="*.fbx")
         elif extension == '.x3d' or extension == '.wrl':
             bpy.ops.import_scene.x3d(filepath=model_path, axis_forward='-Z', axis_up='Y', filter_glob="*.x3d;*.wrl")
+
+        for i in range(33):
+            bpy.ops.mesh.primitive_cube_add()
+            cube = bpy.context.selected_objects[0]
+            cube.name = 'Cube.' + '0' * (3 - len(str(i))) + str(i)
+            x = randint(-10,10)
+            y = randint(-10,10)
+            z = randint(-10,10)
+            cube.location = (x, y, z)
 
         return {"FINISHED"}

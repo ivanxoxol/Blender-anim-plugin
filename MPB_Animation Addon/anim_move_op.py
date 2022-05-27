@@ -27,9 +27,7 @@ class ANIM_OT_Move_obj(Operator):
         with open(csv_path, newline='', encoding='utf-8') as csvfile:
             reader = csv.reader(csvfile)
             all_point = []
-            frame_of_end = 0
             for row in reader:
-                frame_of_end += 1
                 if row[0] in 'fps':
                     continue
                 fps_rate = int(row[0])
@@ -39,26 +37,11 @@ class ANIM_OT_Move_obj(Operator):
                     point.append([int(row[i]), int(row[i + 2]), int(row[i + 1])])
                 all_point.append(point.copy())
         
-        bpy.data.scenes["Scene"].frame_end = frame_of_end
-        now_current = bpy.context.scene.frame_current
-        bpy.context.scene.render.fps = fps_rate
-        
-        for j in range(33):
-            obj_name = 'Cube.' + '0' * (3 - len(str(j))) + str(j)
-            for i in range(3):
-                try:
-                    bpy.data.objects[obj_name].location[i] = all_point[now_current][j][i]
-                    bpy.data.objects[obj_name].keyframe_insert(data_path="location", frame=now_current)
-                except IndexError:
-                    continue
-                
-        if now_current == frame_of_end:
-            bpy.app.handlers.frame_change_pre.clear()
+        for fr in range(len(all_point)):
+            for j in range(33):
+                obj_name = 'Cube.' + '0' * (3 - len(str(j))) + str(j)
+                for i in range(3):
+                    bpy.data.objects[obj_name].location[i] = all_point[fr][j][i]
+                bpy.data.objects[obj_name].keyframe_insert(data_path="location", frame=fr)
         
         return {'FINISHED'}
-
-
-if __name__ == '__main__':    
-    register_class(ANIM_OT_Move_obj)
-
-    bpy.app.handlers.frame_change_pre.append(ANIM_OT_Move_obj.execute)
